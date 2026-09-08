@@ -13,7 +13,7 @@ INDEX_MAP = {
 
 
 def render_index_trend(
-    days: int = 5,
+    days: int = 7,
 ):
 
     df = read_sql(

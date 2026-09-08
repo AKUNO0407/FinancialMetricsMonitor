@@ -300,8 +300,9 @@ st.markdown(
 
 days = st.radio(
     "Lookback",
-    [1, 5, 20, 60],
+    [7, 14, 30, 60],
     index=1,
+    format_func=lambda x: f"{x}D",
     horizontal=True,
     label_visibility="collapsed",
 )
