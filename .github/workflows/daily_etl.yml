@@ -2,7 +2,15 @@ name: Daily Financial Metrics ETL
 
 on:
   schedule:
+    # 4:30 PM Toronto time after US market close
+    # GitHub cron is UTC:
+    # Winter (EST): 21:30 UTC = 4:30 PM ET
+    # Summer (EDT): 20:30 UTC = 4:30 PM ET
+    #
+    # We use 21:30 UTC year-round so the pipeline always runs
+    # after the US market close.
     - cron: "30 21 * * 1-5"
+
   workflow_dispatch:
 
 jobs:
@@ -27,10 +35,27 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          DEEPSEEK_MODEL: ${{ vars.DEEPSEEK_MODEL }}
+          LLM_PROVIDER: ${{ vars.LLM_PROVIDER }}
+
           SMTP_HOST: ${{ secrets.SMTP_HOST }}
-          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_PORT: ${{ vars.SMTP_PORT }}
           SMTP_USER: ${{ secrets.SMTP_USER }}
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
-          ALERT_EMAIL_TO: ${{ secrets.ALERT_EMAIL_TO }}
+          ALERT_EMAIL_TO: ${{ vars.ALERT_EMAIL_TO }}
+
+          PRICE_LOOKBACK_DAYS: ${{ vars.PRICE_LOOKBACK_DAYS }}
+          PRICE_REFRESH_DAYS: ${{ vars.PRICE_REFRESH_DAYS }}
+
+          ETL_LOOKBACK_DAYS: ${{ vars.ETL_LOOKBACK_DAYS }}
+          SUMMARY_LOOKBACK_DAYS: ${{ vars.SUMMARY_LOOKBACK_DAYS }}
+
+          EARNINGS_FUTURE_COUNT: ${{ vars.EARNINGS_FUTURE_COUNT }}
+          EARNINGS_HISTORY_LIMIT: ${{ vars.EARNINGS_HISTORY_LIMIT }}
+
+          ARTICLE_FETCH_LIMIT: ${{ vars.ARTICLE_FETCH_LIMIT }}
+          MAX_ARTICLES_PER_COMPANY: ${{ vars.MAX_ARTICLES_PER_COMPANY }}
+          MAX_ARTICLE_CHARS: ${{ vars.MAX_ARTICLE_CHARS }}
+
         run: |
           python -m etl.run_all
