@@ -2,7 +2,7 @@
 pandas
 numpy
 sqlalchemy
-psycopg2-binary
+psycopg[binary]
 python-dotenv
 PyYAML
 
@@ -12,12 +12,13 @@ requests
 beautifulsoup4
 feedparser
 lxml
+langdetect
 
 # Dashboard
 streamlit
 plotly
 
-# LLM (optional / swappable)
+# LLM
 anthropic
 openai
 ollama
@@ -29,5 +30,5 @@ tenacity
 pytest
 pytest-mock
 
-# Linting/formatting (optional)
+# Linting/formatting
 ruff
