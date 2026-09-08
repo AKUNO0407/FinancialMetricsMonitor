@@ -1,0 +1,581 @@
+name: "AI Infrastructure Chain Manual Watchlist"
+version: "2026-09-02"
+description: "12-bucket manual AI infra chain portfolio aligned to the reference dashboard image."
+
+# ai_segment 对齐你图里的 12 个小分区，便于后续直接做 treemap 分组。
+# ai_exposure_level 判定口径（人工规则）
+# - Core: AI 是核心收入/战略主线（如 GPU/模型平台/AI服务器）
+# - Significant: AI 是重要增长引擎，但不是唯一主业（如云服务/EDA/网络）
+# - Adjacent: 有明确 AI 受益但偏配套（如供电/散热/部分存储）
+# aliases 规则：默认会自动包含 name + ticker；这里只写“额外别名”（如 Google/ChatGPT/高管名）。
+companies:
+
+# 1) 云服务
+- ticker: GOOG
+  name: Alphabet Inc.
+  ai_segment: 云服务
+  ai_exposure_level: Core
+  gics_code: 50202010
+  gics_sub_industry: Interactive Media & Services
+  aliases: [ Google, Alphabet ]
+
+- ticker: MSFT
+  name: Microsoft Corporation
+  ai_segment: 云服务
+  ai_exposure_level: Core
+  gics_code: 45103020
+  gics_sub_industry: Systems Software
+
+- ticker: AMZN
+  name: Amazon.com, Inc.
+  ai_segment: 云服务
+  ai_exposure_level: Core
+  gics_code: 25502020
+  gics_sub_industry: Broadline Retail
+
+- ticker: META
+  name: Meta Platforms, Inc.
+  ai_segment: 云服务
+  ai_exposure_level: Core
+  gics_code: 50202010
+  gics_sub_industry: Interactive Media & Services
+
+- ticker: ORCL
+  name: Oracle Corporation
+  ai_segment: 云服务
+  ai_exposure_level: Significant
+  gics_code: 45103020
+  gics_sub_industry: Systems Software
+
+- ticker: IBM
+  name: International Business Machines Corporation
+  ai_segment: 云服务
+  ai_exposure_level: Significant
+  gics_code: 45102010
+  gics_sub_industry: IT Consulting & Other Services
+
+- ticker: BABA
+  name: Alibaba Group Holding Limited
+  ai_segment: 云服务
+  ai_exposure_level: Significant
+  gics_code: 25502020
+  gics_sub_industry: Broadline Retail
+
+# 2) GPU / 加速芯片
+- ticker: NVDA
+  name: NVIDIA Corporation
+  ai_segment: GPU / 加速芯片
+  ai_exposure_level: Core
+  gics_code: 45301010
+  gics_sub_industry: Semiconductors
+  aliases: [ NVIDIA, Jensen Huang ]
+
+- ticker: AMD
+  name: Advanced Micro Devices, Inc.
+  ai_segment: GPU / 加速芯片
+  ai_exposure_level: Core
+  gics_code: 45301010
+  gics_sub_industry: Semiconductors
+
+- ticker: AVGO
+  name: Broadcom Inc.
+  ai_segment: GPU / 加速芯片
+  ai_exposure_level: Core
+  gics_code: 45301010
+  gics_sub_industry: Semiconductors
+
+- ticker: ARM
+  name: Arm Holdings plc
+  ai_segment: GPU / 加速芯片
+  ai_exposure_level: Significant
+  gics_code: 45301010
+  gics_sub_industry: Semiconductors
+  aliases: [ Arm Holdings ]
+
+- ticker: MRVL
+  name: Marvell Technology, Inc.
+  ai_segment: GPU / 加速芯片
+  ai_exposure_level: Significant
+  gics_code: 45301010
+  gics_sub_industry: Semiconductors
+
+- ticker: QCOM
+  name: QUALCOMM Incorporated
+  ai_segment: GPU / 加速芯片
+  ai_exposure_level: Adjacent
+  gics_code: 45301010
+  gics_sub_industry: Semiconductors
+
+- ticker: ALAB
+  name: Astera Labs, Inc.
+  ai_segment: GPU / 加速芯片
+  ai_exposure_level: Core
+  gics_code: 45301010
+  gics_sub_industry: Semiconductors
+
+# 3) 晶圆代工
+- ticker: TSM
+  name: Taiwan Semiconductor Manufacturing Company Limited
+  ai_segment: 晶圆代工
+  ai_exposure_level: Core
+  gics_code: 45301010
+  gics_sub_industry: Semiconductors
+
+- ticker: INTC
+  name: Intel Corporation
+  ai_segment: 晶圆代工
+  ai_exposure_level: Significant
+  gics_code: 45301010
+  gics_sub_industry: Semiconductors
+
+- ticker: GFS
+  name: GlobalFoundries Inc.
+  ai_segment: 晶圆代工
+  ai_exposure_level: Adjacent
+  gics_code: 45301010
+  gics_sub_industry: Semiconductors
+
+- ticker: UMC
+  name: United Microelectronics Corporation
+  ai_segment: 晶圆代工
+  ai_exposure_level: Adjacent
+  gics_code: 45301010
+  gics_sub_industry: Semiconductors
+
+- ticker: SSNLF
+  name: Samsung Electronics Co., Ltd.
+  ai_segment: 晶圆代工
+  ai_exposure_level: Significant
+  gics_code: 45202030
+  gics_sub_industry: Technology Hardware, Storage & Peripherals
+
+- ticker: SMICY
+  name: Semiconductor Manufacturing International Corporation
+  ai_segment: 晶圆代工
+  ai_exposure_level: Adjacent
+  gics_code: 45301010
+  gics_sub_industry: Semiconductors
+
+# 4) 半导体设备
+- ticker: ASML
+  name: ASML Holding N.V.
+  ai_segment: 半导体设备
+  ai_exposure_level: Core
+  gics_code: 45301020
+  gics_sub_industry: Semiconductor Materials & Equipment
+
+- ticker: AMAT
+  name: Applied Materials, Inc.
+  ai_segment: 半导体设备
+  ai_exposure_level: Core
+  gics_code: 45301020
+  gics_sub_industry: Semiconductor Materials & Equipment
+
+- ticker: LRCX
+  name: Lam Research Corporation
+  ai_segment: 半导体设备
+  ai_exposure_level: Core
+  gics_code: 45301020
+  gics_sub_industry: Semiconductor Materials & Equipment
+
+- ticker: KLAC
+  name: KLA Corporation
+  ai_segment: 半导体设备
+  ai_exposure_level: Core
+  gics_code: 45301020
+  gics_sub_industry: Semiconductor Materials & Equipment
+
+- ticker: ONTO
+  name: Onto Innovation Inc.
+  ai_segment: 半导体设备
+  ai_exposure_level: Significant
+  gics_code: 45301020
+  gics_sub_industry: Semiconductor Materials & Equipment
+
+# 5) HBM / 存储
+- ticker: MU
+  name: Micron Technology, Inc.
+  ai_segment: HBM / 存储
+  ai_exposure_level: Core
+  gics_code: 45301010
+  gics_sub_industry: Semiconductors
+  aliases: [ Micron, Micron Technology ]
+
+- ticker: SNDK
+  name: Sandisk Corporation
+  ai_segment: HBM / 存储
+  ai_exposure_level: Adjacent
+  gics_code: 45202030
+  gics_sub_industry: Technology Hardware, Storage & Peripherals
+
+- ticker: WDC
+  name: Western Digital Corporation
+  ai_segment: HBM / 存储
+  ai_exposure_level: Adjacent
+  gics_code: 45202030
+  gics_sub_industry: Technology Hardware, Storage & Peripherals
+
+- ticker: STX
+  name: Seagate Technology Holdings plc
+  ai_segment: HBM / 存储
+  ai_exposure_level: Adjacent
+  gics_code: 45202030
+  gics_sub_industry: Technology Hardware, Storage & Peripherals
+
+- ticker: NTAP
+  name: NetApp, Inc.
+  ai_segment: HBM / 存储
+  ai_exposure_level: Adjacent
+  gics_code: 45202030
+  gics_sub_industry: Technology Hardware, Storage & Peripherals
+
+- ticker: SIMO
+  name: Silicon Motion Technology Corporation
+  ai_segment: HBM / 存储
+  ai_exposure_level: Adjacent
+  gics_code: 45301010
+  gics_sub_industry: Semiconductors
+
+- ticker: PSTG
+  name: Pure Storage, Inc.
+  ai_segment: HBM / 存储
+  ai_exposure_level: Adjacent
+  gics_code: 45202030
+  gics_sub_industry: Technology Hardware, Storage & Peripherals
+  active_flag: false # name changed
+
+- ticker: P
+  name: Everpure
+  ai_segment: HBM / 存储
+  ai_exposure_level: Adjacent
+  gics_code: 45202030
+  gics_sub_industry: Technology Hardware, Storage & Peripherals
+  aliases: [ Pure Storage, Everpure ]
+
+# 6) 网络与高速互联
+- ticker: ANET
+  name: Arista Networks, Inc.
+  ai_segment: 网络与高速互联
+  ai_exposure_level: Core
+  gics_code: 45201020
+  gics_sub_industry: Communications Equipment
+
+- ticker: CSCO
+  name: Cisco Systems, Inc.
+  ai_segment: 网络与高速互联
+  ai_exposure_level: Significant
+  gics_code: 45201020
+  gics_sub_industry: Communications Equipment
+
+- ticker: CIEN
+  name: Ciena Corporation
+  ai_segment: 网络与高速互联
+  ai_exposure_level: Significant
+  gics_code: 45201020
+  gics_sub_industry: Communications Equipment
+
+- ticker: LITE
+  name: Lumentum Holdings Inc.
+  ai_segment: 网络与高速互联
+  ai_exposure_level: Significant
+  gics_code: 45203015
+  gics_sub_industry: Electronic Components
+
+- ticker: COHR
+  name: Coherent Corp.
+  ai_segment: 网络与高速互联
+  ai_exposure_level: Significant
+  gics_code: 45203015
+  gics_sub_industry: Electronic Components
+
+- ticker: FN
+  name: Fabrinet
+  ai_segment: 网络与高速互联
+  ai_exposure_level: Adjacent
+  gics_code: 45203020
+  gics_sub_industry: Electronic Manufacturing Services
+
+- ticker: JNPR
+  name: Juniper Networks, Inc.
+  ai_segment: 网络与高速互联
+  ai_exposure_level: Adjacent
+  gics_code: 45201020
+  gics_sub_industry: Communications Equipment
+  active_flag: false # acquired by HPE, stopped trading on 2025-07-02
+
+- ticker: HPE
+  name: Hewlett Packard Enterprise
+  ai_segment: 网络与高速互联
+  ai_exposure_level: Adjacent
+  gics_code: 45201020
+  gics_sub_industry: Communications Equipment
+
+# 7) 软件
+- ticker: PLTR
+  name: Palantir Technologies Inc.
+  ai_segment: 软件
+  ai_exposure_level: Core
+  gics_code: 45103020
+  gics_sub_industry: Systems Software
+
+- ticker: CRM
+  name: Salesforce, Inc.
+  ai_segment: 软件
+  ai_exposure_level: Significant
+  gics_code: 45103010
+  gics_sub_industry: Application Software
+
+- ticker: NOW
+  name: ServiceNow, Inc.
+  ai_segment: 软件
+  ai_exposure_level: Significant
+  gics_code: 45103020
+  gics_sub_industry: Systems Software
+  aliases: [ ServiceNow ]
+
+- ticker: SNOW
+  name: Snowflake Inc.
+  ai_segment: 软件
+  ai_exposure_level: Significant
+  gics_code: 45103020
+  gics_sub_industry: Systems Software
+
+- ticker: CRWD
+  name: CrowdStrike Holdings, Inc.
+  ai_segment: 软件
+  ai_exposure_level: Significant
+  gics_code: 45103020
+  gics_sub_industry: Systems Software
+
+- ticker: ADBE
+  name: Adobe Inc.
+  ai_segment: 软件
+  ai_exposure_level: Significant
+  gics_code: 45103010
+  gics_sub_industry: Application Software
+
+- ticker: MDB
+  name: MongoDB, Inc.
+  ai_segment: 软件
+  ai_exposure_level: Adjacent
+  gics_code: 45103020
+  gics_sub_industry: Systems Software
+
+- ticker: DDOG
+  name: Datadog, Inc.
+  ai_segment: 软件
+  ai_exposure_level: Adjacent
+  gics_code: 45103020
+  gics_sub_industry: Systems Software
+
+# 8) 数据中心+供电
+- ticker: VRT
+  name: Vertiv Holdings Co
+  ai_segment: 数据中心+供电
+  ai_exposure_level: Core
+  gics_code: 20104010
+  gics_sub_industry: Electrical Components & Equipment
+
+- ticker: ETN
+  name: Eaton Corporation plc
+  ai_segment: 数据中心+供电
+  ai_exposure_level: Significant
+  gics_code: 20104010
+  gics_sub_industry: Electrical Components & Equipment
+
+- ticker: CEG
+  name: Constellation Energy Corporation
+  ai_segment: 数据中心+供电
+  ai_exposure_level: Significant
+  gics_code: 55101010
+  gics_sub_industry: Electric Utilities
+
+- ticker: PWR
+  name: Quanta Services, Inc.
+  ai_segment: 数据中心+供电
+  ai_exposure_level: Adjacent
+  gics_code: 20103010
+  gics_sub_industry: Construction & Engineering
+
+- ticker: GEV
+  name: GE Vernova Inc.
+  ai_segment: 数据中心+供电
+  ai_exposure_level: Significant
+  gics_code: 20104010
+  gics_sub_industry: Electrical Components & Equipment
+
+- ticker: ABBNY
+  name: ABB Ltd
+  ai_segment: 数据中心+供电
+  ai_exposure_level: Adjacent
+  gics_code: 20104010
+  gics_sub_industry: Electrical Components & Equipment
+
+- ticker: EQIX
+  name: Equinix, Inc.
+  ai_segment: 数据中心+供电
+  ai_exposure_level: Significant
+  gics_code: 60101040
+  gics_sub_industry: Data Center REITs
+
+# 9) 液冷与散热
+- ticker: JCI
+  name: Johnson Controls International plc
+  ai_segment: 液冷与散热
+  ai_exposure_level: Adjacent
+  gics_code: 20101010
+  gics_sub_industry: Building Products
+  ## 也有说法是Auto Parts & Equipment 25101010
+
+- ticker: CARR
+  name: Carrier Global Corporation
+  ai_segment: 液冷与散热
+  ai_exposure_level: Adjacent
+  gics_code: 20101010
+  gics_sub_industry: Building Products
+
+- ticker: MOD
+  name: Modine Manufacturing Company
+  ai_segment: 液冷与散热
+  ai_exposure_level: Significant
+  gics_code: 20101010
+  gics_sub_industry: Building Products
+  ## 也有说法是Auto Parts & Equipment 25101010
+
+- ticker: NVT
+  name: nVent Electric plc
+  ai_segment: 液冷与散热
+  ai_exposure_level: Significant
+  gics_code: 20104010
+  gics_sub_industry: Electrical Components & Equipment
+
+- ticker: TT
+  name: Trane Technologies plc
+  ai_segment: 液冷与散热
+  ai_exposure_level: Adjacent
+  gics_code: 20101010
+  gics_sub_industry: Building Products
+
+# 10) 服务器
+- ticker: SMCI
+  name: Super Micro Computer, Inc.
+  ai_segment: 服务器
+  ai_exposure_level: Core
+  gics_code: 45202030
+  gics_sub_industry: Technology Hardware, Storage & Peripherals
+
+- ticker: DELL
+  name: Dell Technologies Inc.
+  ai_segment: 服务器
+  ai_exposure_level: Significant
+  gics_code: 45202030
+  gics_sub_industry: Technology Hardware, Storage & Peripherals
+
+- ticker: HPE
+  name: Hewlett Packard Enterprise Company
+  ai_segment: 服务器
+  ai_exposure_level: Significant
+  gics_code: 45202030
+  gics_sub_industry: Technology Hardware, Storage & Peripherals
+
+- ticker: LNVGY
+  name: Lenovo Group Limited
+  ai_segment: 服务器
+  ai_exposure_level: Adjacent
+  gics_code: 45202030
+  gics_sub_industry: Technology Hardware, Storage & Peripherals
+
+- ticker: WTW
+  name: Wistron Corporation
+  ai_segment: 服务器
+  ai_exposure_level: Adjacent
+  gics_code: 45202030
+  gics_sub_industry: Technology Hardware, Storage & Peripherals
+
+# 11) EDA
+- ticker: CDNS
+  name: Cadence Design Systems, Inc.
+  ai_segment: EDA
+  ai_exposure_level: Core
+  gics_code: 45103010
+  gics_sub_industry: Application Software
+
+- ticker: SNPS
+  name: Synopsys, Inc.
+  ai_segment: EDA
+  ai_exposure_level: Core
+  gics_code: 45103010
+  gics_sub_industry: Application Software
+
+- ticker: ANSS
+  name: ANSYS, Inc.
+  ai_segment: EDA
+  ai_exposure_level: Significant
+  gics_code: 45103010
+  gics_sub_industry: Application Software
+  active_flag: false # acquired by Synopsys, stopped trading on 2025-07-17
+
+- ticker: KEYS
+  name: Keysight Technologies, Inc.
+  ai_segment: EDA
+  ai_exposure_level: Adjacent
+  gics_code: 45203010
+  gics_sub_industry: Electronic Equipment & Instruments
+
+# 12) 先进封装
+- ticker: AMKR
+  name: Amkor Technology, Inc.
+  ai_segment: 先进封装
+  ai_exposure_level: Core
+  gics_code: 45301010
+  gics_sub_industry: Semiconductors
+
+- ticker: ASX
+  name: ASE Technology Holding Co., Ltd.
+  ai_segment: 先进封装
+  ai_exposure_level: Core
+  gics_code: 45301010
+  gics_sub_industry: Semiconductors
+
+- ticker: CAMT
+  name: Camtek Ltd.
+  ai_segment: 先进封装
+  ai_exposure_level: Significant
+  gics_code: 45301020
+  gics_sub_industry: Semiconductor Materials & Equipment
+
+- ticker: FORM
+  name: FormFactor, Inc.
+  ai_segment: 先进封装
+  ai_exposure_level: Significant
+  gics_code: 45301020
+  gics_sub_industry: Semiconductor Materials & Equipment
+
+# Private leaders (news-only matching)
+## 由于 GICS 体系由 MSCI 和 S&P Dow Jones 专为公开上市交易的股票设计，OpenAI 等私有公司没有官方 GICS 编码。如果后续做 Treemap 或行业矩阵，建议将其映射至最贴近的 Systems Software (45103020)，以便与大模型底座和云基础架构软件保持聚类统计的一致性
+- ticker: "PRIV:OPENAI"
+  name: OpenAI
+  is_public: false
+  if_retrieve_price: false
+  ai_segment: 私有模型公司
+  ai_exposure_level: Core
+  gics_sub_industry: Systems Software
+  aliases: [ OpenAI, ChatGPT, Sam Altman ]
+
+- ticker: "PRIV:ANTHROPIC"
+  name: Anthropic
+  is_public: false
+  if_retrieve_price: false
+  ai_segment: 私有模型公司
+  ai_exposure_level: Core
+  gics_sub_industry: Systems Software
+  aliases: [ Anthropic, Claude ]
+
+- ticker: "PRIV:DATABRICKS"
+  name: Databricks
+  is_public: false
+  if_retrieve_price: false
+  ai_segment: 私有模型公司
+  ai_exposure_level: Core
+  gics_sub_industry: Systems Software
+  aliases: [ Databricks ]

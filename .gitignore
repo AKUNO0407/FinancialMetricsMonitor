@@ -1,0 +1,38 @@
+## --- Environment / secrets ---
+.env
+.env.*
+!.env.example
+
+## --- Python ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyc
+*.egg-info/
+.eggs/
+.venv/
+venv/
+env/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+## --- Streamlit ---
+.streamlit/secrets.toml
+
+## --- OS / editor ---
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+
+## --- Data / logs (local scratch, not the source of truth DB) ---
+/data/*.csv
+/data/*.parquet
+/logs/*.log
+
+## --- Jupyter ---
+.ipynb_checkpoints/
+
+
+*.sql

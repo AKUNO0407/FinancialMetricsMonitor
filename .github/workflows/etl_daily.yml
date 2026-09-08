@@ -1,0 +1,36 @@
+name: Daily ETL - Sector Monitor
+
+on:
+  schedule:
+    # 18:00 America/Toronto = 22:00 UTC (EST, winter) / 22:00 UTC also during EDT is 21:00 UTC.
+    # GitHub Actions cron has no DST awareness -> keep two entries and let run_all.py
+    # itself no-op if outside the intended local-time window, or adjust manually each DST change.
+    - cron: "0 22 * 11,12,1,2,3 *"   # EST (UTC-5)
+    - cron: "0 21 * 4,5,6,7,8,9,10 *" # EDT (UTC-4)
+  workflow_dispatch: {}
+
+jobs:
+  etl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run ETL
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          ALERT_EMAIL_TO: ${{ secrets.ALERT_EMAIL_TO }}
+          LLM_PROVIDER: ${{ secrets.LLM_PROVIDER }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python -m etl.run_all

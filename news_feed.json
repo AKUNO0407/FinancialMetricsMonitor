@@ -1,0 +1,32 @@
+NEWS_FEEDS = {
+    # Major wire / broadsheet
+    "REUT":  {"url": "https://www.reuters.com/arc/outboundfeeds/news-sitemap-index/?outputType=xml", "nested": True},
+    "WSJ":   {"url": "https://www.wsj.com/wsjsitemaps/wsj_google_news.xml", "use_headers": True},
+    "NYT":   "https://www.nytimes.com/sitemaps/new/news.xml.gz",
+    "FT":    "https://www.ft.com/sitemaps/news.xml",
+    "CNN":   "https://www.cnn.com/sitemap/news.xml",
+    "AXIOS": "https://www.axios.com/sitemaps/news.xml",
+    # Financial / market focused
+    "MW":    "https://feeds.marketwatch.com/marketwatch/topstories",
+    "MW_RT": "https://feeds.marketwatch.com/marketwatch/realtimeheadlines",
+    "SA":    "https://seekingalpha.com/sitemap_news.xml",
+    "YHOO":  "https://finance.yahoo.com/rss/topstories",
+    "IBD":   "https://www.investors.com/news-sitemap.xml",
+    # Tech / startup
+    "FORB":  "https://www.forbes.com/news_sitemap.xml",
+    "TCR":   "https://techcrunch.com/news-sitemap.xml",
+    "FORT":  "https://fortune.com/feed/googlenews/articles.xml",
+    "INS":   "https://www.businessinsider.com/sitemap/google-news.xml",
+    # Fintech / banking
+    "BRB":   "https://bankregblog.substack.com/feed",
+    "FBW":   "https://fintechbusinessweekly.substack.com/news_sitemap.xml",
+    "AMB":   {"url": "https://www.americanbanker.com/news-sitemap.xml", "nested": True, "use_headers": True},
+    # International
+    "GRD":   "https://www.theguardian.com/sitemaps/news.xml",
+    "BBC":   {"url": "https://www.bbc.com/sitemaps/https-index-com-news.xml", "nested": True},
+    "SMH":   "https://www.smh.com.au/sitemaps/news/brands/smh",
+    "AFR":   "https://www.smh.com.au/sitemaps/news/brands/afr",
+    # Political / macro
+    "FOX":   "https://www.foxnews.com/sitemap.xml?type=news",
+    "USA":   "https://www.usatoday.com/news-sitemap.xml",
+}

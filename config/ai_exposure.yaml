@@ -1,0 +1,88 @@
+# GICS pre-filter used to build the candidate AI-industry universe.
+# See monitor_readme.md section "Watchlist / AI Exposure definition".
+
+gics_sub_industries:
+- "Semiconductors & Semiconductor Equipment"
+- "IT Services"
+- "Software"
+- "Communications Equipment"
+- "Electrical Equipment"
+
+yahoo_industries:
+#算力与硬件上游
+- "Semiconductors" # 1. 芯片设计制造（大脑）
+- "Semiconductor Equipment & Materials"
+- "Computer Hardware" # 2. 服务器与液冷（骨架）
+- "Communication Equipment" # 3. 高速交换机与网络（血管）
+- "Electronic Components" # 4. 光模块与连接器（神经）
+- "Scientific & Technical Instruments" # 5. 精密量测与检测（天眼）
+- "Electronics & Computer Distribution" # 6. 系统集成与交付（渠道）
+#云与大模型中游
+- "Software—Infrastructure"
+- "Information Technology Services"
+# AI 医疗下游
+- "Biotechnology"
+- "Diagnostics & Research"
+# 自动驾驶与智能制造
+- "Auto Manufacturers"
+- "Specialty Industrial Machinery"
+# 数据与商业化终端
+- "Internet Content & Information"
+- "Software—Application"
+
+screener_region: "us"
+screener_min_market_cap: 300000000 # 3 亿美元，过滤 micro-cap 噪音，按需调整
+
+# 下游行业做业务简介深度清洗（只打标签，不剔除）
+downstream_industries:
+- "Biotechnology"
+- "Diagnostics & Research"
+- "Auto Manufacturers"
+- "Specialty Industrial Machinery"
+- "Internet Content & Information"
+- "Software—Application"
+- "Software—Infrastructure"
+- "Information Technology Services"
+
+ai_keywords:
+- "artificial intelligence"
+- "ai-driven"
+- "machine learning"
+- "deep learning"
+- "large language model"
+- "llm"
+- "autonomous driving"
+- "semiconductor"
+- "chip"
+- "gpu"
+
+# 下游深度清洗评估数量：
+# - >0: 仅评估市值前N家
+# - <=0: 评估所有下游公司（初始化阶段建议用这个）
+summary_filter_top_n: -1
+
+# 非上市公司：仅用于新闻 alias 匹配，无行情 - YFINANCE没办法直接搜出来PRIVATE
+private_companies:
+- name: OpenAI
+  aliases: [ "OpenAI", "ChatGPT", "GPT-5", "Sam Altman" ]
+  ai_segment: "AI Software & Platforms"
+  ai_exposure_level: Core
+- name: Anthropic
+  aliases: [ "Anthropic", "Claude" ]
+  ai_segment: "AI Software & Platforms"
+  ai_exposure_level: Core
+- name: Databricks
+  aliases: [ "Databricks" ]
+  ai_segment: "AI Infrastructure"
+  ai_exposure_level: Significant
+
+# Manually curated overrides — tickers not caught by GICS pre-filter,
+# or whose ai_exposure_level needs a manual value.
+# ai_exposure_level: Core | Significant | Adjacent | None
+manual_overrides:
+- ticker: NVDA
+  ai_segment: "AI Compute & Semiconductors"
+  ai_exposure_level: Core
+- ticker: MSFT
+  ai_segment: "AI Software & Platforms"
+  ai_exposure_level: Significant

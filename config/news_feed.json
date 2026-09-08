@@ -1,0 +1,31 @@
+{
+  "REUT":  {"url": "https://www.reuters.com/arc/outboundfeeds/news-sitemap-index/?outputType=xml", "nested": true},
+  "WSJ":   {"url": "https://www.wsj.com/wsjsitemaps/wsj_google_news.xml", "use_headers": true},
+  "NYT":   {"url": "https://www.nytimes.com/sitemaps/new/news.xml.gz"},
+  "FT":    {"url": "https://www.ft.com/sitemaps/news.xml"},
+  "CNN":   {"url": "https://www.cnn.com/sitemap/news.xml"},
+  "AXIOS": {"url": "https://www.axios.com/sitemaps/news.xml"},
+
+  "MW":    {"url": "https://feeds.marketwatch.com/marketwatch/topstories"},
+  "MW_RT": {"url": "https://feeds.marketwatch.com/marketwatch/realtimeheadlines"},
+  "SA":    {"url": "https://seekingalpha.com/sitemap_news.xml"},
+  "YHOO":  {"url": "https://finance.yahoo.com/rss/topstories"},
+  "IBD":   {"url": "https://www.investors.com/news-sitemap.xml"},
+
+  "FORB":  {"url": "https://www.forbes.com/news_sitemap.xml"},
+  "TCR":   {"url": "https://techcrunch.com/news-sitemap.xml"},
+  "FORT":  {"url": "https://fortune.com/feed/googlenews/articles.xml"},
+  "INS":   {"url": "https://www.businessinsider.com/sitemap/google-news.xml"},
+
+  "BRB":   {"url": "https://bankregblog.substack.com/feed"},
+  "FBW":   {"url": "https://fintechbusinessweekly.substack.com/news_sitemap.xml"},
+  "AMB":   {"url": "https://www.americanbanker.com/news-sitemap.xml", "nested": true, "use_headers": true},
+
+  "GRD":   {"url": "https://www.theguardian.com/sitemaps/news.xml"},
+  "BBC":   {"url": "https://www.bbc.com/sitemaps/https-index-com-news.xml", "nested": true},
+  "SMH":   {"url": "https://www.smh.com.au/sitemaps/news/brands/smh"},
+  "AFR":   {"url": "https://www.smh.com.au/sitemaps/news/brands/afr"},
+
+  "FOX":   {"url": "https://www.foxnews.com/sitemap.xml?type=news"},
+  "USA":   {"url": "https://www.usatoday.com/news-sitemap.xml"}
+}

@@ -1,0 +1,33 @@
+# Core
+pandas
+numpy
+sqlalchemy
+psycopg2-binary
+python-dotenv
+PyYAML
+
+# ETL / data sources
+yfinance>=0.2.40
+requests
+beautifulsoup4
+feedparser
+lxml
+
+# Dashboard
+streamlit
+plotly
+
+# LLM (optional / swappable)
+anthropic
+openai
+ollama
+
+# Scheduling helpers / retries
+tenacity
+
+# Testing
+pytest
+pytest-mock
+
+# Linting/formatting (optional)
+ruff

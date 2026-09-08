@@ -1,0 +1,80 @@
+calendar_year: 2026
+
+events:
+
+- event_type: PPI
+  event_name: Producer Price Index
+  event_date: 2026-09-10
+  event_time: "08:30"
+  source: BLS
+  source_url: "https://www.bls.gov/schedule/news_release/ppi.htm"
+
+- event_type: CPI
+  event_name: Consumer Price Index
+  event_date: 2026-09-11
+  event_time: "08:30"
+  source: BLS
+  source_url: "https://www.bls.gov/schedule/news_release/cpi.htm"
+
+- event_type: NFP
+  event_name: Employment Situation
+  event_date: 2026-10-02
+  event_time: "08:30"
+  source: BLS
+  source_url: "https://www.bls.gov/schedule/news_release/empsit.htm"
+
+- event_type: CPI
+  event_name: Consumer Price Index
+  event_date: 2026-10-14
+  event_time: "08:30"
+  source: BLS
+  source_url: "https://www.bls.gov/schedule/news_release/cpi.htm"
+
+- event_type: PPI
+  event_name: Producer Price Index
+  event_date: 2026-10-15
+  event_time: "08:30"
+  source: BLS
+  source_url: "https://www.bls.gov/schedule/news_release/ppi.htm"
+
+- event_type: NFP
+  event_name: Employment Situation
+  event_date: 2026-11-06
+  event_time: "08:30"
+  source: BLS
+  source_url: "https://www.bls.gov/schedule/news_release/empsit.htm"
+
+- event_type: CPI
+  event_name: Consumer Price Index
+  event_date: 2026-11-10
+  event_time: "08:30"
+  source: BLS
+  source_url: "https://www.bls.gov/schedule/news_release/cpi.htm"
+
+- event_type: PPI
+  event_name: Producer Price Index
+  event_date: 2026-11-12
+  event_time: "08:30"
+  source: BLS
+  source_url: "https://www.bls.gov/schedule/news_release/ppi.htm"
+
+- event_type: NFP
+  event_name: Employment Situation
+  event_date: 2026-12-04
+  event_time: "08:30"
+  source: BLS
+  source_url: "https://www.bls.gov/schedule/news_release/empsit.htm"
+
+- event_type: CPI
+  event_name: Consumer Price Index
+  event_date: 2026-12-10
+  event_time: "08:30"
+  source: BLS
+  source_url: "https://www.bls.gov/schedule/news_release/cpi.htm"
+
+- event_type: PPI
+  event_name: Producer Price Index
+  event_date: 2026-12-15
+  event_time: "08:30"
+  source: BLS
+  source_url: "https://www.bls.gov/schedule/news_release/ppi.htm"
