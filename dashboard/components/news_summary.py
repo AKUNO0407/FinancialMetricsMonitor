@@ -233,123 +233,178 @@ def _render_styles():
     )
 
 
-def _get_article_data(ticker: str, summary_date):
+def _get_article_data(
+    ticker: str,
+    source_articles=None,
+    source_urls=None,
+):
     """
-    Retrieve article-level news for one company.
+    Retrieve only the articles that were actually used
+    by the company-level daily summary.
 
-    The company-level summary remains the primary source.
-    Articles are only loaded when the user expands the company.
+    Priority:
+    1. source_articles -> exact article_id match
+    2. source_urls -> exact article_url fallback
+    3. no lineage -> return empty result
+
+    Never fall back to ticker/date-based broad retrieval.
     """
+
+    # --------------------------------------------------
+    # 1. Preferred: source_articles
+    # --------------------------------------------------
+
+    article_ids = []
+
+    if source_articles:
+        for item in source_articles:
+            if isinstance(item, dict):
+                article_id = item.get("article_id")
+            else:
+                article_id = item
+
+            if article_id is not None:
+                try:
+                    article_ids.append(int(article_id))
+                except (TypeError, ValueError):
+                    continue
+
+    article_ids = list(dict.fromkeys(article_ids))
+
+    if article_ids:
+        return read_sql(
+            """
+            SELECT
+                na.ticker_or_entity AS ticker,
+                na.sentiment AS overall_sentiment,
+                na.summary,
+                nr.headline AS title,
+                nr.source_code AS source_name,
+                nr.article_url,
+                nr.published_date
+            FROM news_analysis na
+            JOIN news_raw nr
+                ON na.article_id = nr.article_id
+            WHERE na.ticker_or_entity = :ticker
+              AND na.article_id = ANY(:article_ids)
+            ORDER BY
+                nr.published_date DESC NULLS LAST
+            """,
+            {
+                "ticker": ticker,
+                "article_ids": article_ids,
+            },
+        )
+
+    # --------------------------------------------------
+    # 2. Fallback: source_urls
+    # --------------------------------------------------
+
+    urls = []
+
+    if source_urls:
+        for url in source_urls:
+            if url:
+                urls.append(str(url))
+
+    urls = list(dict.fromkeys(urls))
+
+    if urls:
+        return read_sql(
+            """
+            SELECT
+                na.ticker_or_entity AS ticker,
+                na.sentiment AS overall_sentiment,
+                na.summary,
+                nr.headline AS title,
+                nr.source_code AS source_name,
+                nr.article_url,
+                nr.published_date
+            FROM news_analysis na
+            JOIN news_raw nr
+                ON na.article_id = nr.article_id
+            WHERE na.ticker_or_entity = :ticker
+              AND nr.article_url = ANY(:source_urls)
+            ORDER BY
+                nr.published_date DESC NULLS LAST
+            """,
+            {
+                "ticker": ticker,
+                "source_urls": urls,
+            },
+        )
+
+    # --------------------------------------------------
+    # 3. No lineage available
+    # --------------------------------------------------
 
     return read_sql(
         """
         SELECT
-            na.ticker_or_entity as ticker,
-            na.sentiment as overall_sentiment,
-            na.summary,
-            nr.headline as title,
-            nr.source_code as source_name,
-            nr.article_url,
-            nr.published_date
-        FROM news_analysis na
-        JOIN news_raw nr
-            ON na.article_id = nr.article_id
-        WHERE na.ticker_or_entity = :ticker
-          AND na.news_date <= :summary_date
-          AND na.news_date >= (
-              :summary_date - INTERVAL '3 days'
-          )
-        ORDER BY
-            nr.published_date DESC NULLS LAST
-        """,
-        {
-            "ticker": ticker,
-            "summary_date": summary_date,
-        },
+            NULL::TEXT AS ticker,
+            NULL::TEXT AS overall_sentiment,
+            NULL::TEXT AS summary,
+            NULL::TEXT AS title,
+            NULL::TEXT AS source_name,
+            NULL::TEXT AS article_url,
+            NULL::DATE AS published_date
+        WHERE FALSE
+        """
     )
-
 
 def _render_articles(
     ticker: str,
-    summary_date,
+    source_articles=None,
+    source_urls=None,
 ):
-    """
-    Render article-level breakdown for one company.
-    """
-
     articles = _get_article_data(
-        ticker,
-        summary_date,
+        ticker=ticker,
+        source_articles=source_articles,
+        source_urls=source_urls,
     )
 
     if articles.empty:
-        st.info(
-            "No article-level details available."
+        st.caption(
+            "Article-level source lineage is not available for this summary."
         )
         return
 
     for _, article in articles.iterrows():
 
-        sentiment = _get_sentiment_config(
-            article["overall_sentiment"]
-        )
+        title = article.get("title") or "Untitled article"
+        source_name = article.get("source_name") or "Unknown source"
+        article_url = article.get("article_url")
+        published_date = article.get("published_date")
+        sentiment = article.get("overall_sentiment") or "NEUTRAL"
+        summary = article.get("summary")
 
-        icon = sentiment["icon"]
+        sentiment_config = _get_sentiment_config(sentiment)
 
-        title = _safe_text(
-            article["title"]
-        )
-
-        source = _safe_text(
-            article["source_name"]
-            or "Unknown source"
-        )
-
-        article_summary = _safe_text(
-            article["summary"]
-        )
-
-        published_date = article[
-            "published_date"
-        ]
+        icon = sentiment_config["icon"]
 
         if published_date is not None:
-            try:
-                published_text = published_date.strftime(
-                    "%b %d"
-                )
-            except AttributeError:
-                published_text = str(
-                    published_date
-                )
+            published_display = str(published_date)
         else:
-            published_text = ""
+            published_display = ""
 
         st.html(
             f"""
-            <div class="news-article">
-
-                <div class="news-article-title">
-                    {icon} {title}
+            <div class="fm-news-article">
+                <div class="fm-news-article-title">
+                    {icon} {html.escape(str(title))}
                 </div>
 
-                <div class="news-article-meta">
-                    {source}
-                    {" · " if published_text else ""}
-                    {published_text}
+                <div class="fm-news-article-meta">
+                    {html.escape(str(source_name))}
+                    {" · " + html.escape(published_display)
+                     if published_display else ""}
                 </div>
-
-                <div class="news-article-summary">
-                    {article_summary}
-                </div>
-
             </div>
             """,
         )
 
-        article_url = article[
-            "article_url"
-        ]
+        if summary:
+            st.caption(str(summary))
 
         if article_url:
             st.link_button(
@@ -357,10 +412,9 @@ def _render_articles(
                 article_url,
                 key=(
                     f"news-{ticker}-"
-                    f"{article['article_url']}"
+                    f"{article_url}"
                 ),
             )
-
 
 def render_news_summary():
     """
@@ -398,6 +452,7 @@ def render_news_summary():
             nds.overall_sentiment,
             nds.summary,
             nds.key_points,
+            nds.source_articles,
             nds.source_urls
 
         FROM news_daily_summary nds
@@ -711,7 +766,8 @@ def render_news_summary():
         ):
             _render_articles(
                 ticker=ticker,
-                summary_date=latest_date,
+                source_articles=row["source_articles"],
+                source_urls=row["source_urls"],
             )
 
         st.divider()
