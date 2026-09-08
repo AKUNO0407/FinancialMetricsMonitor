@@ -3,6 +3,7 @@ pandas
 numpy
 sqlalchemy
 psycopg[binary]
+psycopg2-binary
 python-dotenv
 PyYAML
 
@@ -13,6 +14,8 @@ beautifulsoup4
 feedparser
 lxml
 langdetect
+trafilatura
+
 
 # Dashboard
 streamlit
