@@ -228,9 +228,50 @@ def _render_styles():
             margin-bottom: 14px;
         }
 
+    /* 🎯 锁定 Streamlit 的大卡片框线容器 */
+    div[data-testid="stVerticalBlockBorderContainer"] {
+        /* 1. 边框颜色与粗细 (Border Color & Width) */
+        border: 1px solid #D9D9D9 !important; 
+        
+        /* 2. 圆角大小 (Border Radius) */
+        border-radius: 12px !important; 
+        
+        /* 3. 卡片内部的留白大小/内边距 (Padding) */
+        padding: 20px 24px !important; 
+        
+        /* 4. 卡片背景颜色 (Background Color) - 可以改成淡灰色 #F8F9FA 等 */
+        background-color: #FFFFFF !important; 
+        
+        /* 5. 附加高级质感：卡片微阴影 (Box Shadow) */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+        
+        /* 6. 卡片之间的外边距 (Margin) */
+        margin-bottom: 16px !important;
+    }
+    
+    /* 💡 鼠标悬停在大卡片上时的动态效果（可选，增加交互高级感） */
+    div[data-testid="stVerticalBlockBorderContainer"]:hover {
+        border-color: #A0A0A0 !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+        transition: all 0.2s ease-in-out;
+    }
+    
+
         </style>
         """,
     )
+
+st.markdown(
+    """
+    <style>
+    div[data-testid="stVerticalBlockBorderWrapper"] {
+        border: 5px solid #B8B8B8 !important;
+        border-radius: 12px !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
 
 def _get_article_data(
@@ -637,137 +678,83 @@ def render_news_summary():
         # --------------------------------------------------------
         # Card header
         # --------------------------------------------------------
-
-        st.html(
-            f"""
-            <div class="news-card">
-
-                <div class="news-card-header">
-
-                    <div class="news-company">
-                        {icon}
-                        {company}
-                        <span class="news-ticker">
-                            ({ticker})
-                        </span>
-                    </div>
-
-                    <div class="
-                        news-sentiment
-                        {sentiment_class}
-                    ">
-                        {sentiment_label}
-                    </div>
-
-                </div>
-
-                <div class="news-summary">
-                    {summary}
-                </div>
-
-                <div class="news-stats">
-
-                    <span>
-                        📰 {article_count} articles
-                    </span>
-
-                    <span class="
-                        news-stat-positive
-                    ">
-                        ↑ {bullish_count} Bullish
-                    </span>
-
-                    <span class="
-                        news-stat-negative
-                    ">
-                        ↓ {bearish_count} Bearish
-                    </span>
-
-                    <span class="
-                        news-stat-neutral
-                    ">
-                        → {neutral_count} Neutral
-                    </span>
-
-                    <span class="
-                        news-stat-mixed
-                    ">
-                        ◆ {mixed_count} Mixed
-                    </span>
-
-                </div>
-
-            """,
-        )
-
-        # --------------------------------------------------------
-        # Key points
-        # --------------------------------------------------------
-
-        key_points = row[
-            "key_points"
-        ]
-
-        if key_points:
+        with st.container(border=True):
 
             st.html(
-                """
-                <div class="news-section-title">
-                    KEY DEVELOPMENTS
+                f"""
+                <div class="news-card">
+
+                    <div class="news-card-header">
+
+                        <div class="news-company">
+                            {icon}
+                            {company}
+                            <span class="news-ticker">
+                                ({ticker})
+                            </span>
+                        </div>
+
+                        <div class="
+                            news-sentiment
+                            {sentiment_class}
+                        ">
+                            {sentiment_label}
+                        </div>
+
+                    </div>
+
+                    <div class="news-summary">
+                        {summary}
+                    </div>
+
+                    <div class="news-stats">
+
+                        <span>  📰 {article_count} articles </span>
+                        <span class="news-stat-positive"> ↑ {bullish_count} Bullish</span>
+                        <span class="news-stat-negative"> ↓ {bearish_count} Bearish</span>
+                        <span class="news-stat-neutral"> → {neutral_count} Neutral</span>
+                        <span class="news-stat-mixed"> ◆ {mixed_count} Mixed</span>
+
+                    </div>
                 </div>
+
                 """,
             )
 
-            # PostgreSQL JSONB may already arrive as a Python list.
-            if isinstance(
-                key_points,
-                str,
-            ):
-                try:
-                    import json
+            # --------------------------------------------------------
+            # Key points
+            # --------------------------------------------------------
 
-                    key_points = json.loads(
-                        key_points
-                    )
-                except Exception:
-                    key_points = [
-                        key_points
-                    ]
+            key_points = row["key_points"]
 
-            if isinstance(
-                key_points,
-                list,
-            ):
+            if key_points:
+                if isinstance(key_points, str):
+                    try:
+                        import json
+                        key_points = json.loads(key_points)
+                    except Exception:
+                        key_points = [key_points]
 
-                for point in key_points:
+                if isinstance(key_points, list):
+                        key_points_html = '<div class="news-section-title">KEY DEVELOPMENTS</div>'
+                        for point in key_points:
+                            point = _safe_text(point)
+                            key_points_html += f'<div class="news-key-point">• {point}</div>'
+                        
+                        st.html(key_points_html)
 
-                    point = _safe_text(
-                        point
-                    )
-
-                    st.html(
-                        f"""
-                        <div class="news-key-point">
-                            • {point}
-                        </div>
-                        """,
-                    )
-
-        st.html(
-            "</div>",
-        )
+            # 3. Nest the standard expander directly at the base of the container layout
+            # It will safely open and close within the unified parent border boundary.
+            with st.expander(f"View {article_count} articles"):
+                
+                # Runs your existing article loop smoothly with zero modifications!
+                _render_articles(
+                    ticker=ticker,
+                    source_articles=row["source_articles"],
+                    source_urls=row["source_urls"],
+                )
 
         # --------------------------------------------------------
-        # Article drill-down
+        # 🌟 4. Custom Gutter Separator Line (Placed Outside the Card Box)
         # --------------------------------------------------------
-
-        with st.expander(
-            f"View {article_count} articles"
-        ):
-            _render_articles(
-                ticker=ticker,
-                source_articles=row["source_articles"],
-                source_urls=row["source_urls"],
-            )
-
-        st.divider()
+        st.html('<div class="news-separator" style="margin: 24px 0; border-bottom: 2px solid #D9D3D3; height: 0;"></div>')

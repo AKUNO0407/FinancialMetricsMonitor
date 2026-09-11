@@ -13,6 +13,67 @@ EVENT_ICONS = {
 }
 
 
+# -------------------------------------------------
+# Helpers
+# -------------------------------------------------
+
+def format_earnings_timing(timing):
+    """Convert earnings timing into a user-friendly label."""
+
+    if not timing:
+        return "Time TBD"
+
+    timing = str(timing).upper().strip()
+
+    timing_map = {
+        "BMO": "Before Market Open",
+        "AMC": "After Market Close",
+        "DURING": "During Market Hours",
+    }
+
+    return timing_map.get(timing, str(timing))
+
+
+def format_event_datetime(event_datetime, timing):
+    """Format event datetime with ET timing when available."""
+
+    if event_datetime is not None:
+        try:
+            return event_datetime.strftime("%b %d · %I:%M %p ET").lstrip("0")
+        except (AttributeError, ValueError):
+            pass
+
+    return format_earnings_timing(timing)
+
+
+def format_vs_consensus(value, consensus):
+    """Return percentage difference between a value and consensus."""
+
+    if value is None or consensus is None or consensus == 0:
+        return None
+
+    delta_pct = (value / consensus - 1) * 100
+
+    if delta_pct > 0:
+        return f"+{delta_pct:.1f}% ▲"
+    elif delta_pct < 0:
+        return f"{delta_pct:.1f}% ▼"
+    else:
+        return "0.0% —"
+    
+def get_consensus_status(value, consensus):
+    if value is None or consensus is None:
+        return None
+
+    if value > consensus:
+        return "beat"
+    elif value < consensus:
+        return "miss"
+    return "inline"
+
+
+
+
 def render_prospective_events():
 
     df = read_sql("""
@@ -117,6 +178,11 @@ def render_prospective_events():
                     or ""
                 )
 
+                event_datetime = row["event_datetime"]
+
+                time_label  = format_event_datetime(event_datetime, timing)
+                timing_label = format_earnings_timing(timing)
+
                 eps = row["eps_estimate"]
                 revenue = row["revenue_estimate"]
 
@@ -133,22 +199,40 @@ def render_prospective_events():
                         f"${float(revenue) / 1e9:.2f}B"
                     )
 
-                detail_text = " · ".join(
-                    details
-                )
+                # -------------------------------------------------
+                # Render
+                # -------------------------------------------------
 
-                st.markdown(
-                    f"""
-                    - 💰 **{company} ({ticker})**
-                      <br>
-                      <span style="color:gray">
-                      Earnings · {timing}
-                      </span>
-                    """,
-                    unsafe_allow_html=True,
-                )
+                with st.container(border=True):
 
-                if detail_text:
-                    st.caption(
-                        detail_text
+                    st.html(
+                        f"""
+                        <div style="
+                            font-size: 1.05rem;
+                            font-weight: 600;
+                            margin-bottom: 4px;
+                        ">
+                            💰 {company} ({ticker})
+                        </div>
+
+                        <div style="
+                            color: #666;
+                            font-size: 0.9rem;
+                            margin-bottom: 10px;
+                        ">
+                            Earnings · {time_label}
+                        </div>
+                        """,
                     )
+
+                    if details:
+                        st.html(
+                            f"""
+                            <div style="
+                                font-size: 0.9rem;
+                                line-height: 1.6;
+                            ">
+                                {"<br>".join(details)}
+                            </div>
+                            """,
+                        )
