@@ -361,6 +361,12 @@ def render_market_pulse():
         ),
         width='stretch',
         hide_index=True,
+        column_config={
+            col: st.column_config.Column(
+                alignment="left"
+            )
+            for col in display_df.columns
+        },
     )
 
     st.caption(

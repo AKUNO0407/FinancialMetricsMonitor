@@ -216,28 +216,57 @@ def _render_segment_market_cap(df):
             "company_count",
         ],
     )
+    max_cap = segment_df["market_cap"].max()
+    # 假设最低从 0 开始，最大到 max_cap * 1.5
+    fig.update_xaxes(range=[0, max_cap * 1.5])
 
     fig.update_traces(
-        texttemplate=(
-            "%{customdata[2]}"
-            " · %{customdata[3]:+.2f}%"
-        ),
-        textposition="inside",
-        insidetextanchor="end",
+        textposition="none",
+    #     texttemplate=(
+    #         "%{customdata[2]}"
+    #         " · %{customdata[3]:+.2f}%"
+    #     ),
+    #     textposition="outside",
+    #    # cliponaxis=False,
+    #    # insidetextanchor="end",
         hovertemplate=(
-            "<b>%{customdata[0]}</b>"
+            "%{customdata[0]}"
             "<br>Market Cap: %{customdata[2]}"
             "<br>Avg Daily Return: %{customdata[3]:+.2f}%"
             "<br>Companies: %{customdata[4]}"
             "<extra></extra>"
         ),
+        marker=dict(
+            line=dict(
+                width=1.2,
+                color="rgba(100,100,100,0.5)",
+            )
+        ),
     )
+    # 2. 计算右侧对齐所需的基准值
+    max_cap = segment_df["market_cap"].max()
+    # 动态把实际的 X 轴物理范围撑大 20%，为右侧的对齐文本腾出绝对安全的空白透明显示区
+    fig.update_xaxes(range=[0, max_cap * 1.20])
+    # 3. 动态构建完美右对齐的 Annotations
+    annotations = []
+    for idx, row in segment_df.iterrows():
+        annotations.append(
+            dict(
+                x=max_cap * 1.02,                   # 👈 核心：让所有文字的 X 坐标都在最大 Bar 的再往右一点点
+                y=row["ai_segment"],                # 对应绑定的 Y 轴分类
+                text=f"{row['market_cap_display']} · {row['daily_return_display']:+.2f}%", # 文本内容
+                xanchor="left",                     # 👈 核心：左对齐。文字都往最右侧无限延伸，保证头部完全垂直对齐
+                yanchor="middle",
+                showarrow=False,                    # 隐藏箭头
+                font=dict(size=13, color="gray"),  # 可以自定义字体颜色样式
+            )
+        )
 
     fig.update_layout(
-        height=max(400, len(segment_df) * 4),
+        height=max(400, len(segment_df) * 30),
         margin=dict(
             l=100,
-            r=7,
+            r=60,
             t=7,
             b=7,
         ),
@@ -245,20 +274,24 @@ def _render_segment_market_cap(df):
             title=None,
             showgrid=False,
             showticklabels=False,
+            automargin=True, 
         ),
         yaxis=dict(
             title=None,
             tickfont=dict(size=13),
         ),
+        annotations=annotations, 
         coloraxis_colorbar=dict(
             title="Daily Return",
+            orientation="h", 
+            ticklabelposition="outside left",
             ticksuffix="%",
-            x=-0.3,
-            xanchor="right",
-            y=0.5,
+            x=-0.35,
+            xanchor="left",
+            y=1.1,
             yanchor="middle",
-            len=0.75,
-            thickness=12,
+            len=1.2,
+            thickness=10,
         ),
         showlegend=False,
     )
@@ -402,10 +435,28 @@ def _render_company_map(df):
         .astype(float)
     )
 
+    
+    def clean_and_truncate_label(name, market_cap):
+        # If the company size is tiny, show a tightly truncated version or just ticker
+        if market_cap < 5000:  # Adjust threshold based on your data scale
+            return name[:3] + ".." if len(name) > 3 else name
+        return name
+    
+    map_df["display_label"] = map_df.apply(
+        lambda r: clean_and_truncate_label(r["ticker"], r["market_cap"]), 
+        axis=1
+    )
+    map_df = map_df.sort_values(
+        ["ai_segment", "company_weight"],
+        ascending=[True, False]
+    )
+
+    #map_df["ai_segment"] = map_df["ai_segment"].apply(lambda x: f"<b>{x}</b>")
+
+
     # --------------------------------------------------------
     # Treemap
     # --------------------------------------------------------
-
 
     fig = px.treemap(
         map_df,
@@ -429,6 +480,7 @@ def _render_company_map(df):
             "hover_market_cap",
             "hover_return",
             "hover_price",
+            "display_label",
         ],
     )
 
@@ -453,14 +505,23 @@ def _render_company_map(df):
     # Default trace styling
     # --------------------------------------------------------
 
+
     fig.update_traces(
         texttemplate=(
-            "<b>%{label}</b>"
+            "%{customdata[6]}"
             "<br>"
             "<span style='font-size:14px'>"
             "%{customdata[4]}%"
             "</span>"
         ),
+        textfont_size=14,
+        # 允许 Plotly 自由针对每个 tile 进行独立自适应缩放
+        # 当文字超出格子时，Plotly 默认会在内部对其进行独立等比例缩小
+        insidetextfont=dict(
+            #color="white"
+            family="Arial, sans-serif",
+            weight="bold"  # 👈 核心：让所有格子内部的文字天然加粗！
+            ), 
 
         hovertemplate=company_hover,
 
@@ -469,9 +530,10 @@ def _render_company_map(df):
         marker=dict(
             line=dict(
                 width=1.2,
-                color="rgba(255,255,255,0.75)",
+                color="rgba(100,100,100,0.5)",
             )
         ),
+        
     )
 
     # --------------------------------------------------------
@@ -532,7 +594,7 @@ def _render_company_map(df):
 
             hover_templates.append(
                 (
-                    f"<b>{_safe_text(label)}</b>"
+                    f"{_safe_text(label)}"
                     f"<br>Market Cap: "
                     f"${stats['segment_market_cap']:,.0f}"
                     f"<br>Avg Daily Return: "
@@ -621,7 +683,7 @@ def _render_company_map(df):
         else:
 
             hover_templates.append(
-                f"<b>{_safe_text(label)}</b>"
+                f"{_safe_text(label)}"
                 "<extra></extra>"
             )
 
@@ -632,7 +694,7 @@ def _render_company_map(df):
     # --------------------------------------------------------
 
     fig.update_layout(
-        height=680,
+        height=800,
 
         margin=dict(
             l=0,
@@ -643,19 +705,21 @@ def _render_company_map(df):
 
         coloraxis_colorbar=dict(
             title="Daily Return",
+            orientation="h", 
+            #ticklabelposition="inside left",
             ticksuffix="%",
-            x=1.02,
+            x=0,
             xanchor="left",
-            y=0.5,
+            y=1.1,
             yanchor="middle",
             len=0.75,
             thickness=12,
         ),
 
-        uniformtext=dict(
-            minsize=13,
-            mode="hide",
-        ),
+        # uniformtext=dict(
+        #     minsize=8,      # 👈 The absolute smallest font size allowed for tiny tiles
+        #     mode="show"     # 👈 "show" forces text on screen; "hide" hides text if it fits poorly
+        # ),
     )
 
     # --------------------------------------------------------
@@ -993,7 +1057,7 @@ def render_treemap():
     # --------------------------------------------------------
 
     left_col, right_col = st.columns(
-        [0.8, 1.7],
+        [0.7, 1.6],
         gap="small",
     )
 
