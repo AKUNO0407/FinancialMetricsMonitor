@@ -33,6 +33,7 @@ def render_index_trend(
         """,
         {"days": days
          , "tickers": tuple(tickers)},
+        expanding_params=["tickers"],
     )
 
     if df.empty:
