@@ -1,14 +1,14 @@
 # Core
-pandas
+pandas==3.0.5
 numpy
-sqlalchemy
-psycopg[binary]
+SQLAlchemy==2.0.52
+psycopg[binary]==3.3.5
 psycopg2-binary
 python-dotenv
 PyYAML
 
 # ETL / data sources
-yfinance>=0.2.40
+yfinance==1.7.0
 requests
 beautifulsoup4
 feedparser
@@ -18,8 +18,8 @@ trafilatura
 
 
 # Dashboard
-streamlit
-plotly
+streamlit==1.62.0
+plotly==7.0.0
 
 # LLM
 anthropic
