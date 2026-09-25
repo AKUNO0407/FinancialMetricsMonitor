@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, text
+from sqlalchemy import bindparam, create_engine, text
 import pandas as pd
 import os
 
@@ -20,15 +20,18 @@ engine = create_engine(
 )
 
 
-def read_sql(
-    query: str,
-    params: dict | None = None,
-) -> pd.DataFrame:
+def read_sql(query, params=None, expanding_params=None):
+    stmt = text(query)
+
+    if expanding_params:
+        for param_name in expanding_params:
+            stmt = stmt.bindparams(
+                bindparam(param_name, expanding=True)
+            )
 
     with engine.begin() as conn:
-
         return pd.read_sql(
-            text(query),
+            stmt,
             conn,
             params=params,
         )
